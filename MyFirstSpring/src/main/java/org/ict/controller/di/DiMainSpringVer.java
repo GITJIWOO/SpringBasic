@@ -1,6 +1,7 @@
 package org.ict.controller.di;
 
-import org.ict.controller.di.classfile.Singer;
+import org.ict.controller.di.classfile.Broadcast;
+import org.ict.controller.di.classfile.Satellite;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 public class DiMainSpringVer {
@@ -13,8 +14,11 @@ public class DiMainSpringVer {
 		// 이제 그 공장에 있는 객체를 마음대로 꺼내 쓸 수 있습니다.
 		// 얻어오는 방법은 위에 생성한 context 객체를 이용해
 		// context.getBean("bean이름", 자료형.class); 입니다.
-		Singer singer = context.getBean("singer", Singer.class);
-		singer.sing();
+		Broadcast broadCast = context.getBean("broadcast", Broadcast.class);
+		broadCast.broadcast();
+		
+		Satellite satellite = context.getBean("satellite", Satellite.class);
+		satellite.Broadcasting();
 		
 		// 호출이 끝나면 context를 닫아줘야 합니다.
 		context.close();
