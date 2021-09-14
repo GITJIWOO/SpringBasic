@@ -8,6 +8,7 @@ import lombok.Data;
 public class BoardVO {
 	private Long bno;
 	private String title;
+	// 시간은 Date로 작성합니다. java.sql 내부 자료입니다.
 	private String content;
 	private String writer;
 	private Date regdate;
