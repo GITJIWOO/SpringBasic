@@ -47,8 +47,24 @@ public class BoardMapperTests {
 		mapper.insert(vo);
 	}
 	
-	@Test
+	// @Test
 	public void testSelect() {
 		mapper.select(5L);
+	}
+	
+	// @Test
+	public void testDelete() {
+		mapper.delete(4L);
+	}
+	
+	@Test
+	public void testUpdate() {
+		BoardVO vo = new BoardVO();
+		vo.setBno(1L);
+		vo.setTitle("글제목수정");
+		vo.setContent("글내용수정");
+		vo.setWriter("글쓴이수정");
+//		log.info(vo);
+		mapper.update(vo);
 	}
 }
