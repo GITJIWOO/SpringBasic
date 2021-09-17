@@ -22,4 +22,6 @@ SELECT * FROM board_tbl;
 
 SELECT * FROM board_tbl WHERE bno < 4;
 
+SELECT * FROM board_tbl WHERE title LIKE '%a%' ORDER BY bno DESC;
+
 commit;

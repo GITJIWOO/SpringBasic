@@ -25,4 +25,9 @@ public interface BoardService {
 	
 	// 전체 글 목록
 	public List<BoardVO> getList();
+	
+	public List<BoardVO> getSearch(String keyword);
+	
+	// insertSelectKey를 매퍼, 서비스, 컨트롤러에 적용시켜주세요.
+	public void insertSelectKey(BoardVO vo);
 }

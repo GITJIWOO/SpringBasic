@@ -36,7 +36,7 @@ public class BoardControllerTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
-	// @Test
+	@Test
 	public void testList() throws Exception {
 		log.info(
 				// .get(접속주소)/.post(접속주소) 를 제외한 나머지는
@@ -75,10 +75,34 @@ public class BoardControllerTests {
 	// 참고로 .param()으로 전달하는 자료는 자료형을 막론하고 무조건
 	// " " 로 감싸서 문자화 시켜야 하는데 이유는
 	// url에는 자료형 구분이 없고 오직 String뿐이기 떄문입니다.
-	@Test
-	public void testget() throws Exception {
+	// @Test
+	public void testGet() throws Exception {
 		String resultPage = mockMvc.perform(
 				MockMvcRequestBuilders.get("/board/get/1")
+				).andReturn().getModelAndView().getViewName();
+		log.info(resultPage);
+	}
+	
+	// @Test
+	public void testRemove() throws Exception {
+		String resultPage = mockMvc.perform(
+				MockMvcRequestBuilders.post("/board/remove/21")
+				).andReturn().getModelAndView().getViewName();
+		log.info(resultPage);
+	}
+	
+	// @Test
+	public void testModify() throws Exception {
+		// 실제로 실행할 쿼리문과 비교에서 데이터를 날려주시면 됩니다.
+		// 현재 수정로직은 bno를 WHERE절의 조건으로,
+		// title, content, writer를 수정내역으로 받으니
+		// 파라미터도 위 4개 항목을 전달해줍니다.
+		String resultPage = mockMvc.perform(
+				MockMvcRequestBuilders.post("/board/modify")
+				.param("bno", "1")
+				.param("title", "제목수정테스트")
+				.param("content", "본문수정테스트")
+				.param("writer", "글쓴이수정테스트")
 				).andReturn().getModelAndView().getViewName();
 		log.info(resultPage);
 	}

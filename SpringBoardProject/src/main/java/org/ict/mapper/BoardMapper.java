@@ -37,4 +37,8 @@ public interface BoardMapper {
 	// where 구문은 bno로 구분에서 처리합니다.
 	// 수정로직을 작성해주시고, 테스트까지 해주세요
 	public void update(BoardVO vo);
+	
+	public List<BoardVO> getSearch(String keyword);
+	
+	public void insertSelectKey(BoardVO vo);
 }

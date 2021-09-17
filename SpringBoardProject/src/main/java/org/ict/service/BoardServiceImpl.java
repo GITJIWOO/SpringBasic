@@ -59,4 +59,10 @@ public class BoardServiceImpl implements BoardService {
 		return boardList;
 	}
 
+	@Override
+	public List<BoardVO> getSearch(String keyword) {
+		List<BoardVO> boardList = mapper.getSearch(keyword);
+		return boardList;
+	}
+
 }
