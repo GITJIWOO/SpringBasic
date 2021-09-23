@@ -38,7 +38,7 @@
 			keyProperty에 변수명을, order에 BEFORE를 넣어서
 			insert쿼리문 실행 이전에 조회한 bno값을 bno라는 명칭에 저장 -->
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
-			SELECT board_tbl.nextval FROM DUAL
+			SELECT board_num.nextval FROM DUAL
 		</selectKey>
 		INSERT INTO board_tbl(bno, title, content, writer)
 			VALUES(#{bno}, #{title}, #{content}, #{writer})
