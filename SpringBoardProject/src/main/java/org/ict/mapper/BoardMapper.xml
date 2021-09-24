@@ -66,4 +66,16 @@
 			SELECT * FROM board_tbl WHERE title LIKE '%'||#{keyword}||'%' ORDER BY bno DESC
 		]]>
 	</select>
+	
+	<!-- getListPaging을 완성시켜보세요. -->
+	<select id="getListPaging" resultType="org.ict.domain.BoardVO">
+		<!-- *로 조회하면 rn까지 포함하므로 깔끔하게 rn없이
+			조회하도록 조회컬럼을 다시 작성합니다. -->
+		<![CDATA[
+			SELECT * FROM
+				(SELECT /*+ INDEX_DESC(board_tbl pk_board) */
+				 rownum rn, board_tbl.* FROM board_tbl WHERE rownum <= #{pageNum} * #{amount})
+			WHERE rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
 </mapper>

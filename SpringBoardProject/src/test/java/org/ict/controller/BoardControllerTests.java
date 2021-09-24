@@ -36,7 +36,7 @@ public class BoardControllerTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 	
-	@Test
+	// @Test
 	public void testList() throws Exception {
 		log.info(
 				// .get(접속주소)/.post(접속주소) 를 제외한 나머지는
@@ -47,6 +47,17 @@ public class BoardControllerTests {
 				// 글 전체 목록을 가져오는지 여부를 테스트해야 합니다.
 				mockMvc.perform(
 					MockMvcRequestBuilders.get("/board/list"))
+						.andReturn()
+						.getModelAndView()
+						.getModelMap()
+				);
+	}
+	
+	@Test
+	public void testPaging() throws Exception {
+		log.info(
+				mockMvc.perform(
+					MockMvcRequestBuilders.get("/board/list?pageNum=1234"))
 						.andReturn()
 						.getModelAndView()
 						.getModelMap()

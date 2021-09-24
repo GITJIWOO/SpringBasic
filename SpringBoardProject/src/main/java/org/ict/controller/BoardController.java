@@ -2,6 +2,7 @@ package org.ict.controller;
 
 import java.util.List;
 
+import org.ict.domain.BoardDTO;
 import org.ict.domain.BoardVO;
 import org.ict.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class BoardController {
 	@Autowired
 	private BoardService service;
 	
+	/*
 	@GetMapping("/list") // Get방식으로만 주소 연결
 	public void list(String keyword, Model model) {
 		if(keyword == null) {
@@ -48,6 +50,19 @@ public class BoardController {
 		
 		// 1. views 하위에 경로에 맞게 폴더 및 .jsp 파일 생성
 		// 2. 부트스트랩을 적용해 게시글 목록을 화면에 표시.
+	}
+	*/
+	
+	// 페이징 처리가 되는 리스트 메서드를 새로 연결합니다.
+	// 페이징 처리용 메서드는 기존과 접속주소는 같으나
+	// 기존에 받던 자료에 더해서, BoardDTO를 추가로 더 입력받습니다.
+	@GetMapping("/list")
+	// BoardDTO를 파라미터에 선언해 pageNum, amount 처리
+	public void list(BoardDTO dto, String keyword, Model model) {
+		if(keyword == null) {
+			List<BoardVO> boardPaging = service.getListPaging(dto);
+			model.addAttribute("list", boardPaging);
+		}
 	}
 	
 	// 아래 주소로 데이터를 보내줄 수 있는 form을 작성해주세요.

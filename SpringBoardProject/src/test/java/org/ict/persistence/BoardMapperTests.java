@@ -1,5 +1,6 @@
 package org.ict.persistence;
 
+import org.ict.domain.BoardDTO;
 import org.ict.domain.BoardVO;
 import org.ict.mapper.BoardMapper;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class BoardMapperTests {
 		mapper.delete(4L);
 	}
 	
-	@Test
+	// @Test
 	public void testUpdate() {
 		BoardVO vo = new BoardVO();
 		vo.setBno(1L);
@@ -66,5 +67,13 @@ public class BoardMapperTests {
 		vo.setWriter("글쓴이수정");
 //		log.info(vo);
 		mapper.update(vo);
+	}
+	
+	@Test
+	public void testgetPaging() {
+		// 페이징 코드를 이용해서 원하는 번호의 페이지가 잘 출력되는지
+		// 확인해주세요.
+		BoardDTO dto = new BoardDTO(4000, 10);
+		mapper.getListPaging(dto);
 	}
 }

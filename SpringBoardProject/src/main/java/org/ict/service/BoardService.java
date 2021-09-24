@@ -2,6 +2,7 @@ package org.ict.service;
 
 import java.util.List;
 
+import org.ict.domain.BoardDTO;
 import org.ict.domain.BoardVO;
 
 // 서비스 계층은, 하나의 동작을 담당합니다.
@@ -30,4 +31,7 @@ public interface BoardService {
 	
 	// insertSelectKey를 매퍼, 서비스, 컨트롤러에 적용시켜주세요.
 	public void insertSelectKey(BoardVO vo);
+	
+	// 페이징 글 목록
+	public List<BoardVO> getListPaging(BoardDTO dto);
 }
