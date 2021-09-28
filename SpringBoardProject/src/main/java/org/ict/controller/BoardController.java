@@ -2,7 +2,10 @@ package org.ict.controller;
 
 import java.util.List;
 
-import org.ict.domain.BoardDTO;
+import org.ict.domain.Criteria;
+import org.ict.domain.PageDTO;
+import org.ict.domain.SearchCriteria;
+import org.ict.mapper.BoardMapper;
 import org.ict.domain.BoardVO;
 import org.ict.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +58,22 @@ public class BoardController {
 	
 	// 페이징 처리가 되는 리스트 메서드를 새로 연결합니다.
 	// 페이징 처리용 메서드는 기존과 접속주소는 같으나
-	// 기존에 받던 자료에 더해서, BoardDTO를 추가로 더 입력받습니다.
+	// 기존에 받던 자료에 더해서, Criteria를 추가로 더 입력받습니다.
 	@GetMapping("/list")
-	// BoardDTO를 파라미터에 선언해 pageNum, amount 처리
-	public void list(BoardDTO dto, String keyword, Model model) {
-		if(keyword == null) {
-			List<BoardVO> boardPaging = service.getListPaging(dto);
+	// Criteria를 파라미터에 선언해 pageNum, amount 처리
+	public void list(SearchCriteria cri, Model model) {
+			// 1. mapper 내부에 전체 글 개수를 가져오는 로직 추가
+			// 2. 전체 그ㄹ 개수를 얻어와서 현재 PageDTO의 총 글 개수 위치에
+			// 		DB에서 그때그떄 조회해온 총 그ㄹ 개수를 넣도록 코드를 수정해주세요.
+			int total = service.getAllPage(cri);
+			PageDTO btnMaker = new PageDTO(cri, total, 10);
+			
+			List<BoardVO> boardPaging = service.getListPaging(cri);
 			model.addAttribute("list", boardPaging);
-		}
+			// btnMaker를 넘기면 동시에 SearchCriteria도 같이 넘어감
+			// 단, btnMaker 내부 멤버변수로 SearchCriteria가 있기 때문에
+			// 클래스 내부 변수로 클래스를 넣은 형태의 호출이 2단계로 이루어짐
+			model.addAttribute("btnMaker", btnMaker);
 	}
 	
 	// 아래 주소로 데이터를 보내줄 수 있는 form을 작성해주세요.

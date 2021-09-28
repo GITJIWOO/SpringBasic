@@ -4,6 +4,29 @@
 <!-- 위에 스키마 작성 후, 어떤 인터페이스의 메서드를 쿼리문과
 	연결해 줄지 아래와 같이 인터페이스 파일부터 mapper태그로 연결합니다 -->
 <mapper namespace="org.ict.mapper.BoardMapper">
+	<sql id="search">
+		<!-- 여기부터 조건별 쿼리가 들어감 -->
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				(title LIKE '%'||#{keyword}||'%') AND
+			</if>
+			<if test="searchType == 'c'.toString()">
+				(content LIKE '%'||#{keyword}||'%') AND
+			</if>
+			<if test="searchType == 'w'.toString()">
+				(writer LIKE '%'||#{keyword}||'%') AND
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				((title LIKE '%'||#{keyword}||'%') OR (content LIKE '%'||#{keyword}||'%')) AND
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				((content LIKE '%'||#{keyword}||'%') OR (writer LIKE '%'||#{keyword}||'%')) AND
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				((title LIKE '%'||#{keyword}||'%') OR (content LIKE '%'||#{keyword}||'%') OR (writer LIKE '%'||#{keyword}||'%')) AND
+			</if>
+		</if>
+	</sql>
 	<!-- 위의 BoardMapper 인터페이스의 getList 메서드를 호출시
 		실제로 실행할 쿼리문을 아래와 같이 연결해줍니다.
 		mybatis는 단일자료와 리스트자료를 구분하지 않기 때문에
@@ -63,7 +86,10 @@
 		CONCAT('%', #{변수명}, '%') (MySQL)-->
 	<select id="getSearch" resultType="org.ict.domain.BoardVO">
 		<![CDATA[
-			SELECT * FROM board_tbl WHERE title LIKE '%'||#{keyword}||'%' ORDER BY bno DESC
+			SELECT * FROM
+				(SELECT /*+ INDEX_DESC(board_tbl pk_board) */
+				 rownum rn, board_tbl.* FROM board_tbl WHERE rownum <= #{pageNum} * #{amount})
+			WHERE rn > (#{pageNum} - 1) * #{amount} AND title LIKE '%'||#{keyword}||'%' ORDER BY bno DESC
 		]]>
 	</select>
 	
@@ -71,11 +97,32 @@
 	<select id="getListPaging" resultType="org.ict.domain.BoardVO">
 		<!-- *로 조회하면 rn까지 포함하므로 깔끔하게 rn없이
 			조회하도록 조회컬럼을 다시 작성합니다. -->
+		<!-- 수정을 위해 조건에 구애받지 않느ㅡㄴ 공동쿼리와
+			조건별로 추가해야하는 조건별 쿼리를  따로 지정합니다.-->
 		<![CDATA[
 			SELECT * FROM
 				(SELECT /*+ INDEX_DESC(board_tbl pk_board) */
-				 rownum rn, board_tbl.* FROM board_tbl WHERE rownum <= #{pageNum} * #{amount})
+				 rownum rn, board_tbl.* FROM board_tbl WHERE 
+		]]>
+		
+		<include refid="search"></include>
+		
+		<!-- 아래부터는 MySQL의 Limit와 같은 역할을 하는 부분 -->
+		<![CDATA[
+			rownum <= #{pageNum} * #{amount})
 			WHERE rn > (#{pageNum} - 1) * #{amount}
 		]]>
+	</select>
+	
+	<select id="getAllPage" resultType="int">
+		SELECT count(bno) FROM board_tbl WHERE
+		<!-- 여기에 sql태그에 저장된 조건절 넣기
+			기존 코드는 검색조건에 무관하게 전체 DB글만 가져왔으므로
+			검색조건에 따른 총 글 개수르ㅡㄹ 조건에 맞게 출력하도록 수정
+			검색조건은 searchType 변수를 전달받아야 하므로
+			컨트롤러, 서비스, 매퍼쪽에도 searchType을 받을 수 있게
+			getAllPage 호출 관련 메서드레 SearchCriteria를 전달합니다. -->
+		<include refid="search"></include>
+		bno > 0
 	</select>
 </mapper>

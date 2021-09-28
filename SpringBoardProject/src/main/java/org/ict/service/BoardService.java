@@ -2,7 +2,8 @@ package org.ict.service;
 
 import java.util.List;
 
-import org.ict.domain.BoardDTO;
+import org.ict.domain.Criteria;
+import org.ict.domain.SearchCriteria;
 import org.ict.domain.BoardVO;
 
 // 서비스 계층은, 하나의 동작을 담당합니다.
@@ -33,5 +34,7 @@ public interface BoardService {
 	public void insertSelectKey(BoardVO vo);
 	
 	// 페이징 글 목록
-	public List<BoardVO> getListPaging(BoardDTO dto);
+	public List<BoardVO> getListPaging(SearchCriteria dto);
+	
+	public int getAllPage(SearchCriteria cri);
 }

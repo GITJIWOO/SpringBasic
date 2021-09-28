@@ -2,7 +2,7 @@ package org.ict.service;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.ict.domain.BoardDTO;
+import org.ict.domain.Criteria;
 import org.ict.domain.BoardVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +74,7 @@ public class BoardServiceTests {
 	
 	@Test
 	public void testPaging() {
-		BoardDTO dto = new BoardDTO(10, 10);
+		Criteria dto = new Criteria(10, 10);
 		service.getListPaging(dto);
 	}
 }

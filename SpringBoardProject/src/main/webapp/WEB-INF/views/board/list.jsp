@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
 	<table class="table table-hover">
@@ -22,7 +23,9 @@
 			<c:forEach var="list" items="${list}">
 				<tr>
 					<td>${list.bno}</td>
-					<td><a href="/board/get/${list.bno}">${list.title}</a></td>
+					<td><a href="/board/get/${list.bno}?pageNum=${pageNum}&searchType=${btnMaker.cri.searchType}&keyword=${btnMaker.cri.keyword}">d
+						${list.title}</a>
+					</td>
 					<td>${list.writer}</td>
 					<td>${list.regdate}</td>
 				</tr>
@@ -33,9 +36,62 @@
 		<input type="submit" value="글쓰기">
 	</form>
 	<form action="/board/list" method="get">
-		<input type="text" name="keyword" value="${keyword}">
-		<input type="submit" value="검색">
+		<select name="searchType">
+			<option value="n"
+				<c:out value="${btnMaker.cri.searchType == null ? 'selected' : ''}"/>>
+				-
+			</option>
+			<option value="t"
+				<c:out value="${btnMaker.cri.searchType eq 't' ? 'selected' : ''}"/>>
+				제목
+			</option>
+			<option value="c"
+				<c:out value="${btnMaker.cri.searchType eq 'c' ? 'selected' : ''}"/>> 
+				본문
+			</option>
+			<option value="w"
+				<c:out value="${btnMaker.cri.searchType eq 'w' ? 'selected' : ''}"/>>
+				글쓴이
+			</option>
+			<option value="tc"
+				<c:out value="${btnMaker.cri.searchType eq 'tc' ? 'selected' : ''}"/>>
+				제목+본문
+			</option>
+			<option value="cw"
+				<c:out value="${btnMaker.cri.searchType eq 'cw' ? 'selected' : ''}"/>>
+				본문+글쓴이
+			</option>
+			<option value="tcw"
+				<c:out value="${btnMaker.cri.searchType eq 'tcw' ? 'selected' : ''}"/>>
+				제목+본문+글쓴이
+			</option>
+			
+		</select>
+		<input type="text" name="keyword" value="${btnMaker.cri.keyword}" id="searchInput">
+		<input type="submit" id="searchBtn" value="검색"/>
 	</form>
+	<!-- 페이지네이션 버튼 위치
+		페이지네이션 버튼을 상황에 맞게 출력하기 위해
+		C태그 라이브러리의 조건식을 활용합니다. -->
+	<nav aria-label="Page navigation example" class="pagination justify-content-center">
+		<ul class="pagination">
+			<c:if test="${btnMaker.prev}">
+		    	<li class="page-item">
+		    		<a class="page-link" href="/board/list?pageNum=${btnMaker.startPage - 1}&searchType=${btnMaker.cri.searchType}&keyword=${btnMaker.cri.keyword}">이전</a>
+		    	</li>
+			</c:if>
+			<c:forEach begin="${btnMaker.startPage}" end="${btnMaker.endPage }" var="pageNum">
+			    <li class="page-item ${btnMaker.cri.pageNum == pageNum ? 'active' : ''}">
+			    	<a class="page-link" href="/board/list?pageNum=${pageNum}&searchType=${btnMaker.cri.searchType}&keyword=${btnMaker.cri.keyword}">${pageNum}</a>
+			    </li>
+			</c:forEach>
+		    <c:if test="${btnMaker.next}">
+		    	<li class="page-item">
+		    		<a class="page-link" href="/board/list?pageNum=${btnMaker.endPage + 1}&searchType=${btnMaker.cri.searchType}&keyword=${btnMaker.cri.keyword}">다음</a>
+		    	</li>
+		    </c:if>
+		</ul>
+	</nav>
 	
 	<!-- 모달 코드는 작성이 안 되어있는게 아니고
 		작성은 해뒀지만 css의 display옵션을 none으로 평상시에 두고

@@ -2,7 +2,8 @@ package org.ict.service;
 
 import java.util.List;
 
-import org.ict.domain.BoardDTO;
+import org.ict.domain.Criteria;
+import org.ict.domain.SearchCriteria;
 import org.ict.domain.BoardVO;
 import org.ict.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,11 +68,21 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardVO> getListPaging(BoardDTO dto) {
+	public List<BoardVO> getListPaging(SearchCriteria dto) {
 		// dto정보(pageNum, amount)를 받아오면
 		// 그걸 이용해서 mapper쪽의 getListPaging호출 후
 		// 나온 결과물을 리턴해서 컨트롤러에서 쓸 수 있도록 처리
 		List<BoardVO> boardList = mapper.getListPaging(dto);
 		return boardList;
+	}
+
+	@Override
+	public void insertSelectKey(BoardVO vo) {
+	}
+
+	@Override
+	public int getAllPage(SearchCriteria cri) {
+		int page = mapper.getAllPage(cri);
+		return page;
 	}
 }

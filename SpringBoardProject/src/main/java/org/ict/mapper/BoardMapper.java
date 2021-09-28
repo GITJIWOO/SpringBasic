@@ -3,7 +3,8 @@ package org.ict.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
-import org.ict.domain.BoardDTO;
+import org.ict.domain.Criteria;
+import org.ict.domain.SearchCriteria;
 import org.ict.domain.BoardVO;
 
 public interface BoardMapper {
@@ -46,5 +47,7 @@ public interface BoardMapper {
 	// 페이징 처리를 하면서 조회할 것이기 때문에
 	// BoardDTO 정보를 파라미터로 제출해야
 	// 몇 페이지의 글을 조회할지 정보를 같이 쿼리문에 전송할 수 있습니다.
-	public List<BoardVO> getListPaging(BoardDTO dto);
+	public List<BoardVO> getListPaging(SearchCriteria dto);
+	
+	public int getAllPage(SearchCriteria cri);
 }
