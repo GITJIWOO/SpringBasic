@@ -17,7 +17,7 @@ public class Criteria {
 	
 	// 페이지 번호, 페이지 당 몇 개의 글을 보여줄지에 대해
 	// 먼저 저장하고, 이를 이용해 나머지 정보를 계산합니다.
-	private int PageNum;
+	private int pageNum;
 	private int amount;
 	
 	// 생성자 오버로딩, 만약 페이지 정보가 들어온게 없다면
@@ -28,7 +28,7 @@ public class Criteria {
 	
 	// 페이지 정보가 돌아온다면 들어온 정보를 수치를 정함
 	public Criteria(int pageNum, int amount) {
-		this.PageNum = pageNum;
+		this.pageNum = pageNum;
 		this.amount = amount;
 	}
 	

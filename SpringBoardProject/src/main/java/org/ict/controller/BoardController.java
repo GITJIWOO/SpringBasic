@@ -2,6 +2,9 @@ package org.ict.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.ict.domain.Criteria;
 import org.ict.domain.PageDTO;
 import org.ict.domain.SearchCriteria;
@@ -169,8 +172,13 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(RedirectAttributes rttr, BoardVO board) {
+	public String modify(SearchCriteria cri, RedirectAttributes rttr, BoardVO board) {
+		log.info(cri.getKeyword());
 		service.modify(board);
+		
+		rttr.addFlashAttribute("pageNum", cri.getPageNum());
+		rttr.addFlashAttribute("searchType", cri.getSearchType());
+		rttr.addFlashAttribute("keyword", cri.getKeyword());
 		
 		rttr.addFlashAttribute("modifysuccess", "modifysuccess");
 		rttr.addFlashAttribute("bno", board.getBno());
@@ -180,4 +188,27 @@ public class BoardController {
 		return "redirect:/board/get/" + board.getBno();
 	}
 	
+	// 세션 추가를 위해서는 컨트롤러 내부의 메서드마다 해줘야 한다. 
+	// 구체적으로는 세션사용이 필요한 메서드마다 HttpServletRequest 타입의 변수를 선언해준다.
+	// 내부에 위에서 선언한변수.getSession() 명령어로 세션을 받아와서 써주면 된다. 
+	@GetMapping("/session1")
+	public String se1( /* HttpServletRequest request */ HttpSession session) {
+		// 위와 같이 HttpServletRequest 객체를 파라미터에 선언한 후 
+		// HttpSession 객체를 얻어오면 세션기능을 그대로 쓸 수 있다.
+
+		// HttpSession session = request.getSession();
+		session.setAttribute("sTest", "123");
+		
+		return "session1";
+	}
+	
+	@GetMapping("/session2")
+	public String se2(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		
+		System.out.println("세션작동확인 : " + session.getAttribute("sTest"));
+		
+		return "session2";
+	}
 }

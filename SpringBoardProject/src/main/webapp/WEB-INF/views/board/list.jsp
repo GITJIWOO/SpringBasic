@@ -23,7 +23,7 @@
 			<c:forEach var="list" items="${list}">
 				<tr>
 					<td>${list.bno}</td>
-					<td><a href="/board/get/${list.bno}?pageNum=${pageNum}&searchType=${btnMaker.cri.searchType}&keyword=${btnMaker.cri.keyword}">d
+					<td><a href="/board/get/${list.bno}?pageNum=${btnMaker.cri.pageNum}&searchType=${btnMaker.cri.searchType}&keyword=${btnMaker.cri.keyword}">
 						${list.title}</a>
 					</td>
 					<td>${list.writer}</td>

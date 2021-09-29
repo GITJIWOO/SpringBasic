@@ -36,17 +36,18 @@
 	
 	<!-- 수정페이지로 넘어가는 버튼 -->
 	<form action="/board/boardmodify/${board.bno}" method="post">
+		<input type="hidden" value="${board.bno}" name="bno">
+		<input type="hidden" value="${param.pageNum}" name="pageNum">
+		<input type="hidden" value="${param.searchType}" name="searchType">
+		<input type="hidden" value="${param.keyword}" name="keyword">
 		<input type="submit" value="수정하기">
 	</form>
 	
 	<!-- 목록으로 돌아가는 버튼 -->
-	<form action="/board/list" method="get">
-		<input type="submit" value="돌아가기">
-	</form>
+	<!-- pageNum, searchType, keyword -->
+	<a href="/board/list?pageNum=${param.pageNum}&searchType=${param.searchType}&keyword=${param.keyword}">돌아가기</a>
 	
 	<!-- 글 삭제용 버튼 -->
-	<form action="/board/remove/${board.bno}" method="post" id="remove">
-	</form>
 	<button onclick="remove()">삭제하기</button>
 	<script>
 		function remove(){
