@@ -5,19 +5,19 @@
 <mapper namespace="org.ict.mapper.ReplyMapper">
 	
 	<select id="getList" resultType="org.ict.domain.ReplyVO">
-		SELECT * FROM reply_tbl WHERE bno=#{bno} ORDER BY r_no DESC
+		SELECT * FROM reply_tbl WHERE bno=#{bno} ORDER BY rno DESC
 	</select>
 	
 	<insert id="create">
-		INSERT INTO reply_tbl(r_no, bno, reply, replyer) VALUES (reply_num.nextval, #{bno}, #{reply}, #{replyer})
+		INSERT INTO reply_tbl(rno, bno, reply, replyer) VALUES (reply_num.nextval, #{bno}, #{reply}, #{replyer})
 	</insert>
 	
 	<update id="update">
-		UPDATE reply_tbl SET reply=#{reply}, updateDate=sysdate WHERE r_no=#{r_no}
+		UPDATE reply_tbl SET reply=#{reply}, updateDate=sysdate WHERE rno=#{rno}
 	</update>
 	
 	<delete id="delete">
-		DELETE FROM reply_tbl WHERE r_no=#{r_no}
+		DELETE FROM reply_tbl WHERE rno=#{rno}
 	</delete>
 	
 </mapper>
