@@ -15,4 +15,5 @@ public interface ReplyMapper {
 	
 	public void delete(Long rno);
 	
+	public long getBno(long rno);
 }

@@ -66,7 +66,7 @@
 	</div>
 	
 	<div class="row">
-		<h3 class="text-primary">댓글</h3>
+		<h3 class="text-primary">댓글 ${vo.replycount}</h3>
 		<div id="replies">
 		
 		</div>

@@ -20,6 +20,7 @@
 			<th>글쓴이</th>
 			<th>날짜</th>
 			<th>최종수정일</th>
+			<th>댓글 수</th>
 		</tr>
 		<c:forEach var="board" items="${list }">
 			<tr>
@@ -28,6 +29,7 @@
 				<td>${board.writer }</td>
 				<td>${board.regdate }</td>
 				<td>${board.updatedate }</td>
+				<td>${board.replycount}</td>
 			</tr>
 		</c:forEach>
 		
