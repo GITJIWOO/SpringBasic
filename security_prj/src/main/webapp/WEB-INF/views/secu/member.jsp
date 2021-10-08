@@ -7,6 +7,7 @@
 <title>Member</title>
 </head>
 <body>
-
+	<h1>Member 페이지</h1>
+	<a href="/customLogout">로그아웃</a>
 </body>
 </html>
