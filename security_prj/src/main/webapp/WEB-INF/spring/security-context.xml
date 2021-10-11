@@ -13,6 +13,8 @@
 	
 	<bean id="customAccessDenied" class="org.ict.security.CustomAccessDeniedHandler" />
 	<bean id="customLoginSuccess" class="org.ict.security.CustomLoginSuccessHandler" />
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="customUserDetailService" class="org.ict.security.CustomUserDetailService" />
 	
 	<security:http>
 	
@@ -36,11 +38,13 @@
 	
 	<security:authentication-manager>
 		
-		<security:authentication-provider>
-			<security:user-service>
+		<security:authentication-provider user-service-ref="customUserDetailService">
+			<!-- <security:user-service>
 				<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER" />
 				<security:user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN" />
-			</security:user-service>
+			</security:user-service> -->
+			<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
 		</security:authentication-provider>
 		
 	</security:authentication-manager>
