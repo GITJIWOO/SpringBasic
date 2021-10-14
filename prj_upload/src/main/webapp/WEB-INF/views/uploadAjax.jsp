@@ -6,6 +6,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.uploadResult {
+		width: 100%;
+		background-color: gray;
+	}
+	.uploadResult ul {
+		display: flex;
+		flex-flow: row;
+		justify-content: center;
+		align-content: center;
+	}
+	.uploadResult ul li {
+		list-style: none;
+		padding: 10px;
+	}
+	.uploadResult ul li img {
+		width: 20px;
+	}
+</style>
 </head>
 <body>
 	
@@ -13,6 +32,12 @@
 	
 	<div class="uploadDiv">
 		<input type="file" name="uploadFile" multiple>
+	</div>
+	
+	<div class="uploadResult">
+		<ul>
+			<!-- 파일 목록 -->
+		</ul>
 	</div>
 	
 	<button id="uploadBtn">Upload</button>
@@ -36,6 +61,8 @@
 				}
 				return true;
 			}
+			
+			let cloneObj = $(".uploadDiv").clone();
 			
 			$("#uploadBtn").on("click", function(e){
 				
@@ -62,12 +89,56 @@
 					contentType: false,
 					data: formData,
 					type: "POST",
+					dataType: "json",
 					success: function(result){
+						console.log(result);
 						alert("Uploaded");
+						showUploadedFile(result);
+						$(".uploadDiv").html(cloneObj.html());
 					}
 				}); // ajax
-			});
-		});
+			}); // end uploadBtn click
+			
+			let uploadResult = $(".uploadResult ul");
+			
+			function showUploadedFile(uploadResultArr){
+				let str = "";
+				
+				$(uploadResultArr).each(function(i, obj){
+					if(!obj.image){
+						let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+						str += "<li><a href='/download?fileName=" + fileCallPath + "'>" + "<img src='/resources/다운로드.png'>" + obj.fileName + "</a>" + "<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>" + "</li>";
+					} else {
+						// str += "<li>" + obj.fileName + "</li>";
+						
+						let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+						
+						str += "<li><a href='/download?fileName=" + fileCallPath + "'>" + "<img src='/display?fileName=" + fileCallPath + "'></a>" + "<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>" + "</li>";
+					}
+				});
+				uploadResult.append(str);
+			} // end showUploadedFile
+			
+			$(".uploadResult").on("click", "span", function(e){
+				let targetFile = $(this).data("file");
+				let type = $(this).data("type");
+				
+				let targetLi = $(this).closest("li");
+				
+				$.ajax({
+					url: "/deleteFile",
+					data: {fileName: targetFile, type:type},
+					dataType: "text",
+					type: "POST",
+					success: function(result){
+						alert(result);
+						targetLi.remove();
+					}
+				});
+			}); // end click span
+			
+		}); // end document
+		
 	</script>
 	
 </body>
