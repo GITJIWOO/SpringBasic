@@ -12,7 +12,8 @@ public class SampleServiceImpl implements SampleService {
 
 	@Override
 	public void introduce() {
-		System.out.println("김지우");
+		System.out.println("채종훈 입니다. 반갑습니다.");
+		
 	}
 
 }

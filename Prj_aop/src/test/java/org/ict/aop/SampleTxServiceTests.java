@@ -1,6 +1,6 @@
 package org.ict.aop;
 
-import org.ict.service.SampleService;
+import org.ict.service.SampleTxService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +12,16 @@ import lombok.extern.log4j.Log4j;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 @Log4j
-public class SampleServiceTests {
+public class SampleTxServiceTests {
 
 	@Autowired
-	private SampleService service;
-	
-	//@Test
-	public void testClass() {
-		log.info(service);
-		log.info(service.getClass().getName());
-	}
+	private SampleTxService service;
 	
 	@Test
-	public void testAdd() throws Exception {
-		log.info(service.doAdd("123", "456"));
-		service.introduce();
+	public void testInsert() {
+		String str = "abcdefghijklmnopqrstuvwxyz";
+		
+		service.addData(str);
 	}
 	
 	
