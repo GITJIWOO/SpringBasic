@@ -54,6 +54,16 @@ public interface BoardMapper {
 	// SearchCriteria가 검색조건에 대한 정보를 담고 있음.
 	public int getTotalBoard(SearchCriteria cri);
 	
-	public void updateReplyCount(@Param("bno") long bno, @Param("amount") long amount);
+	// 댓글 썼을때 board_tbl컬럼의 replycount를 증가시키는 메서드
+	public void updateReplyCount(@Param("bno") Long bno,
+								@Param("amount") Long amount);		
+	
 	
 }
+
+
+
+
+
+
+

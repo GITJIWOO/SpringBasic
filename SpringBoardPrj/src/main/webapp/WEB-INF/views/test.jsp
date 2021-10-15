@@ -52,13 +52,17 @@
 		</div>
 	</div>
 	
+	
+	
+	
 	<!-- jquery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- 코드는 위에서 아래로 실행되므로 ajax스크립트 태그는 맨 아래에 -->
 	<script>
-		var bno = 1;
+		var bno = 44444;
 		
 		// 비동기 코드
+		// 글쓰기 부분
 		$("#replyAddBtn").on("click", function(){
 			// 각 input태그에 들어있던 글쓴이, 본문의 value값을 변수에 저장함.
 			var replyer = $("#newReplyWriter").val();
@@ -89,19 +93,49 @@
 				}
 			})
 		});
-		
+
+		// 글 삭제 로직
 		$("#replyDelBtn").on("click", function(){
-			// 삭제에 필요한 댓글번호 모달 타이틀 부분에서 얻기
+			// 삭제에 필요한 댓글번호를 모달 타이틀 부분에서 얻기
 			var rno = $(".modal-title").html();
 			
 			$.ajax({
 				type : 'delete',
 				url : '/replies/' + rno,
-				// 전달 데이터가 없이 url과 호출타입만으로 삭제처리하므로
-				// 이외 정보는 제공할 필요가 없음
+				// 삭제로직은 rno만 전달함
+				// 호출타입 delete, url정보 이외엔 처리할게 없음
 				success : function(result){
-					if(result === "SUCCESS") {
+					if(result === 'SUCCESS'){
 						alert(rno + "번 댓글이 삭제되었습니다.");
+						// 댓글삭제 후에 모달창 닫고 새 댓글목록 갱신
+						$('#modDiv').hide('slow');
+						getAllList();
+					}
+				}
+			})
+		});
+		
+		// 글 수정 로직(rno, reply 필요)
+		$('#replyModBtn').on("click", function(){
+			// rno(수정에 필요한 댓글번호 모달 타이틀에서 얻기)
+			var rno = $(".modal-title").html();
+			// 수정에 필요한 본문내역을 #replytext의 value값으로 얻기
+			var reply = $("#replytext").val();
+			
+			$.ajax({
+				type : 'patch',//or put
+				url : '/replies/' + rno,
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "PATCH"//or PUT
+				},
+				dataType : 'text',
+				data : JSON.stringify(
+						{reply:reply}
+						),
+				success : function(result){
+					if(result === 'SUCCESS'){
+						alert(rno + "번 댓글이 수정되었습니다.");
 						// 댓글 삭제 후 모달창 닫고 새 댓글목록 갱신
 						$("#modDiv").hide("slow");
 						getAllList();
@@ -110,31 +144,8 @@
 			});
 		});
 		
-		$("#replyModBtn").on("click", function(){
-			// 수정에 필요한 댓글번호 모달 타이틀 부분에서 얻기
-			var rno = $(".modal-title").html();
-			// 수정에 필요한 본문내역을 #reply의 value값으로 얻기
-			var reply = $("#replytext").val();
-			
-			$.ajax({
-				type : 'put',
-				url : '/replies/' + rno,
-				headers : {
-					"Content-Type" : "application/json",
-					"X-HTTP-Method-Override" : "PUT"
-				},
-				dataType : 'text',
-				data : JSON.stringify({reply:reply}),
-				success : function(result){
-					if(result === "SUCCESS"){
-						alert(rno + "번 댓글이 수정되었습니다.");
-						// 댓글 삭제 후 모달함 닫고 새 댓글목록 갱신
-						$("#modDiv").hide("slow");
-						getAllList();
-					}
-				}
-			})
-		});
+		
+		
 		
 		// 이벤트 위임
 		// 내가 현재 이벤트를 걸려는 집단(button) 을 포함하면서 범위가 제일 좁은
@@ -158,6 +169,15 @@
 			$("#replytext").val(reply);// 모달 수정창에 댓글본문 넣기
 			$("#modDiv").show("slow"); // 창에 애니메이션 효과 넣기
 		});
+		
+
+			
+		
+		
+		
+		
+		
+		
 		
 		function getAllList(){
 			$.getJSON("/replies/all/" + bno, function(data){

@@ -15,8 +15,7 @@ public class BoardVO {
 	private String writer;
 	private Date regdate;
 	private Date updatedate;
-	private long replycount;
+	private Long replycount;
 	
 	private List<BoardAttachVO> attachList;
-	
 }

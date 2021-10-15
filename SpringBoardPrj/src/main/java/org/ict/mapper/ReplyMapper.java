@@ -15,5 +15,7 @@ public interface ReplyMapper {
 	
 	public void delete(Long rno);
 	
-	public long getBno(long rno);
+	// 댓글번호로 글번호 유추하는 로직
+	public Long getBno(Long rno);
+	
 }
