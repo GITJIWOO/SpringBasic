@@ -5,6 +5,7 @@ import java.util.List;
 import org.ict.domain.BoardVO;
 import org.ict.domain.Criteria;
 import org.ict.domain.SearchCriteria;
+import org.ict.mapper.BoardAttachMapper;
 import org.ict.mapper.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,27 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private BoardMapper mapper;
 	
+	@Autowired
+	private BoardAttachMapper baMapper;
+	
 	
 	// 등록작업시 BoardVO를 매개로 실행하기 때문에
 	// 아래와 같이 BoardVO를 파라미터에 설정해둠.
 	// BoardServiceTests에 VO를 생성해 테스트해주세요.
 	@Override
-	public void register(BoardVO vo) {
+	public void register(BoardVO board) {
 		log.info("등록 작업 실행");
 		// mapper.insert(vo); 에서 bno를 얻기위해 변경
-		mapper.insertSelectKey(vo);
+		mapper.insertSelectKey(board);
+		
+		if(board.getAttachList() == null || board.getAttachList().size() <= 0) {
+			return;
+		}
+		
+		board.getAttachList().forEach(attach -> {
+			attach.setBno(board.getBno());
+			baMapper.insert(attach);
+		});
 	}
 
 	// 전체 글을 다 가져오는게 아닌 특정 글 하나만 가져오는 로직을
