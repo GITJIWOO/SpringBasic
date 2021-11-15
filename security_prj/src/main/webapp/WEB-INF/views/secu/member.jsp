@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Member</title>
+<title>Insert title here</title>
 </head>
 <body>
-	<h1>Member 페이지</h1>
-	<a href="/customLogout">로그아웃</a>
+	<h1>member주소</h1>
 </body>
 </html>
